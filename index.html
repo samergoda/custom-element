@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img{
+            width: 40px;
+        }
+        </style>
+</head>
+<body>
+    <search-box></search-box>
+    <search-box>
+        <img src="https://png.pngtree.com/png-vector/20190115/ourmid/pngtree-vector-search-icon-png-image_320926.jpg" slot="left"/>
+        <img src="https://w7.pngwing.com/pngs/52/84/png-transparent-no-symbol-icon-cancel-s-angle-text-symmetry-thumbnail.png" slot="right"/>
+        </search-box>
+
+    <script>
+        class SearchBox extends HTMLElement{
+            constructor(){
+                super()
+                this.attachShadow({mode:'open'});
+
+                this.shadowRoot.append(SearchBox.template.content.cloneNode(true))
+                this.input = this.shadowRoot.querySelector('#input')
+                this.leftSlot = this.shadowRoot.querySelector('slot[name="left"]')
+                this.rightSlot = this.shadowRoot.querySelector('slot[name="right"]')
+
+                this.leftSlot.onclick= (e)=>{
+
+                    alert('leftSlot')
+                }
+
+                this.rightSlot.onclick= (e)=>{
+
+                    alert('rightSlot')
+                }
+            }
+        
+        }
+
+
+
+            SearchBox.template = document.createElement("template");
+
+            SearchBox.template.innerHTML = `
+<style>
+/*
+* The :host selector refers to the <search-box> element in the light
+* DOM. These styles are defaults and can be overridden by the user of the
+* <search-box> with styles in the light DOM.
+*/
+:host {
+display: inline-block; /* The default is inline display */
+border: solid black 1px; /* A rounded border around the <input> and <slots> */
+border-radius: 5px;
+padding: 4px 6px; /* And some space inside the border */
+}
+:host([hidden]) { /* Note the parentheses: when host has hidden... */
+display:none; /* ...attribute set don't display it */
+}
+:host([disabled]) { /* When host has the disabled attribute... */
+opacity: 0.5; /* ...gray it out */
+}
+:host([focused]) { /* When host has the focused attribute... */
+box-shadow: 0 0 2px 2px #6AE; /* display this fake focus ring. */
+}
+/* The rest of the stylesheet only applies to elements in the Shadow DOM. */
+input {
+border-width: 0; /* Hide the border of the internal input field. */
+outline: none; /* Hide the focus ring, too. */
+font: inherit; /* <input> elements don't inherit font by default */
+background: inherit; /* Same for background color. */
+}
+slot {
+cursor: default; /* An arrow pointer cursor over the buttons */
+user-select: none; /* Don't let the user select the emoji text */
+}
+</style>
+<div>
+    <slot name="left">\u{1f50d}</slot> <!-- U+1F50D is a magnifying glass -->
+<input type="text" id="input" /> <!-- The actual input element -->
+<slot name="right">\u{2573}</slot> <!-- U+2573 is an X -->
+</div>
+`;
+       customElements.define("search-box", SearchBox); 
+    </script>
+</body>
+</html>
